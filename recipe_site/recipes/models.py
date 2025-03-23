@@ -18,14 +18,19 @@ class Recipe(models.Model):
     """Модель для хранения рецептов.
     Рецепт может иметь несколько категорий (через связь ManyToMany)
     """
-    title = models.CharField(max_length=100, null=False, blank=False, verbose_name="Название рецепта")
+    title = models.CharField(max_length=100, null=False, blank=False,
+                             verbose_name="Название рецепта")
     description = models.TextField(max_length=100, verbose_name="Описание")
     steps = models.TextField(verbose_name="Шаги приготовления")
-    cook_time = models.PositiveIntegerField(help_text="Укажите время в минутах",
-                                            verbose_name="Время приготовления")
-    image = models.ImageField(upload_to='recipe_images/', blank=True, null=True, verbose_name="Изображение")
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recipes", verbose_name="Автор")
-    categories = models.ManyToManyField('Category', through='RecipeCategory', verbose_name="Категории")
+    cook_time = models.PositiveIntegerField(
+                                        help_text="Укажите время в минутах",
+                                        verbose_name="Время приготовления")
+    image = models.ImageField(upload_to='recipe_images/', blank=True, null=True,
+                                verbose_name="Изображение")
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recipes",
+                                verbose_name="Автор")
+    categories = models.ManyToManyField('Category', through='RecipeCategory',
+                                        verbose_name="Категории")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата добавления")
 
     def __str__(self):
