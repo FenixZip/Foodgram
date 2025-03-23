@@ -1,0 +1,65 @@
+<!-- templates/recipes/base.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Recipe Site</title>
+  <style>
+      /* Простой минимальный стиль */
+      body {
+          font-family: Arial, sans-serif;
+          margin: 40px;
+      }
+
+      nav a, nav form {
+          display: inline-block;
+          margin-right: 15px;
+      }
+
+      .container {
+          max-width: 800px;
+          margin: auto;
+      }
+
+      img {
+          max-width: 100%;
+          height: auto;
+      }
+
+      .logout-button {
+          background: none;
+          border: none;
+          color: blue;
+          text-decoration: underline;
+          cursor: pointer;
+          font: inherit;
+          padding: 0;
+      }
+  </style>
+</head>
+<body>
+<nav>
+  {% if user.is_authenticated %}
+    Привет, {{ user.username }} |
+    <a href="{% url 'recipes:add_recipe' %}">Добавить рецепт</a> |
+
+    <!-- Выход через POST-запрос -->
+    <form action="{% url 'recipes:logout' %}" method="post" style="display: inline;">
+      {% csrf_token %}
+      <button type="submit" class="logout-button">Выход</button>
+    </form>
+
+  {% else %}
+    <a href="{% url 'recipes:login' %}">Вход</a> |
+    <a href="{% url 'recipes:register' %}">Регистрация</a>
+  {% endif %}
+</nav>
+<hr>
+
+<div class="container">
+  {% block content %}
+    <!-- Сюда будет вставляться контент из дочерних шаблонов -->
+  {% endblock %}
+</div>
+</body>
+</html>

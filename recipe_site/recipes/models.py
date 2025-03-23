@@ -14,6 +14,14 @@ class Category(models.Model):
         return f'Категория -> {self.name}'
 
 
+class Ingredient(models.Model):
+    """Ингредиенты"""
+    name = models.CharField(max_length=100, verbose_name="Название ингредиента")
+
+    def __str__(self):
+        return f'Название ингредиента -> {self.name}'
+
+
 class Recipe(models.Model):
     """Модель для хранения рецептов.
     Рецепт может иметь несколько категорий (через связь ManyToMany)
@@ -36,6 +44,15 @@ class Recipe(models.Model):
     def __str__(self):
         """Отображение рецепта по его названию"""
         return f'Название рецепта -> {self.title}'
+
+
+class RecipeIngredient(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients')
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    amount = models.CharField(max_length=100, verbose_name="Количество")
+
+    def __str__(self):
+        return f"{self.ingredient.name} — {self.amount}"
 
 
 class RecipeCategory(models.Model):

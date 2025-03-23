@@ -1,0 +1,20 @@
+{% extends 'recipes/base.html' %}
+
+{% block content %}
+  <h2>Добавить рецепт</h2>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <h3>Ингредиенты:</h3>
+    {{ formset.management_form }}
+    {% for ingredient_form in formset %}
+      <div style="margin-bottom: 10px; border: 1px solid #ccc; padding: 10px;">
+        {{ ingredient_form.as_p }}
+      </div>
+    {% endfor %}
+
+    <button type="submit">Сохранить</button>
+  </form>
+{% endblock %}
