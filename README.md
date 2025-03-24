@@ -46,3 +46,16 @@ python manage.py migrate
 
 # 5. Запускаем сервер
 python manage.py runserver
+
+## ⚙️ Структура проекта
+
+recipe_site/
+├── recipes/              # Приложение
+│   ├── models.py         # Модели
+│   ├── views.py          # Представления
+│   ├── templates/        # HTML-шаблоны
+│   └── forms.py          # Формы
+├── media/                # Загрузки
+├── static/               # Статика
+├── manage.py
+└── requirements.txt
