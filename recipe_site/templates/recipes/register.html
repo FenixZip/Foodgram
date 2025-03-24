@@ -1,11 +1,15 @@
-<!-- templates/recipes/register.html -->
 {% extends 'recipes/base.html' %}
 
 {% block content %}
-  <h2>Регистрация</h2>
-  <form method="post">
+<h2>Регистрация</h2>
+
+{% if form.errors %}
+  <div style="color: red;">{{ form.errors }}</div>
+{% endif %}
+
+<form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Зарегистрироваться</button>
-  </form>
+</form>
 {% endblock %}

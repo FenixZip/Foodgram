@@ -1,17 +1,16 @@
-<!-- templates/recipes/home.html -->
 {% extends 'recipes/base.html' %}
 
 {% block content %}
-  <h1>Случайные рецепты</h1>
-  <ul>
+<h1>Случайные рецепты</h1>
+<ul>
     {% for recipe in recipes %}
-      <li>
-        <a href="{% url 'recipes:recipe_detail' recipe.id %}">
-          {{ recipe.title }}
-        </a>
-      </li>
+        <li>
+            <a href="{% url 'recipes:recipe_detail' recipe.id %}">
+                {{ recipe.title }}
+            </a>
+        </li>
     {% empty %}
-      <li>Рецептов пока нет.</li>
+        <li>Рецептов пока нет.</li>
     {% endfor %}
-  </ul>
+</ul>
 {% endblock %}

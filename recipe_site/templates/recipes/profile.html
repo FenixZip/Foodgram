@@ -1,0 +1,19 @@
+{% extends 'recipes/base.html' %}
+
+{% block content %}
+<h2>Мои рецепты</h2>
+
+{% if recipes %}
+  <ul>
+    {% for recipe in recipes %}
+      <li>
+        <a href="{% url 'recipes:recipe_detail' recipe.id %}">{{ recipe.title }}</a> —
+        {{ recipe.cook_time }} мин
+        [<a href="{% url 'recipes:edit_recipe' recipe.id %}">Редактировать</a>]
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>У вас пока нет рецептов. <a href="{% url 'recipes:add_recipe' %}">Создать рецепт</a></p>
+{% endif %}
+{% endblock %}

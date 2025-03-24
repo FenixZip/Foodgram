@@ -1,20 +1,27 @@
 {% extends 'recipes/base.html' %}
 
 {% block content %}
-  <h2>Добавить рецепт</h2>
+<h2>{% if edit %}Редактировать рецепт{% else %}Добавить рецепт{% endif %}</h2>
 
-  <form method="post" enctype="multipart/form-data">
+{% if form.errors %}
+  <div style="color: red;">{{ form.errors }}</div>
+{% endif %}
+{% if formset.non_form_errors %}
+  <div style="color: red;">{{ formset.non_form_errors }}</div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
 
     <h3>Ингредиенты:</h3>
     {{ formset.management_form }}
-    {% for ingredient_form in formset %}
-      <div style="margin-bottom: 10px; border: 1px solid #ccc; padding: 10px;">
-        {{ ingredient_form.as_p }}
-      </div>
+    {% for form in formset %}
+        <div style="margin-bottom: 10px; border: 1px solid #ccc; padding: 10px;">
+            {{ form.as_p }}
+        </div>
     {% endfor %}
 
     <button type="submit">Сохранить</button>
-  </form>
+</form>
 {% endblock %}

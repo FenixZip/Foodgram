@@ -1,11 +1,16 @@
-<!-- templates/recipes/login.html -->
 {% extends 'recipes/base.html' %}
 
 {% block content %}
-  <h2>Вход</h2>
-  <form method="post">
+<h2>Вход</h2>
+
+{% if form.errors %}
+  <div style="color: red;">{{ form.errors }}</div>
+{% endif %}
+
+<form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+    <input type="hidden" name="next" value="{{ next|default:'/' }}">
     <button type="submit">Войти</button>
-  </form>
+</form>
 {% endblock %}
