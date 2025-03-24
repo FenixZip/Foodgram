@@ -3,7 +3,17 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import inlineformset_factory
 
-from .models import Recipe, RecipeIngredient
+from .models import Recipe, RecipeIngredient, UserProfile
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('bio', 'avatar')
+        labels = {
+            'bio': 'О себе',
+            'avatar': 'Аватар',
+        }
 
 
 class RecipeForm(forms.ModelForm):
@@ -12,6 +22,14 @@ class RecipeForm(forms.ModelForm):
         fields = ['title', 'description', 'steps', 'cook_time', 'image', 'categories']
         widgets = {
             'categories': forms.CheckboxSelectMultiple(),
+        }
+        labels = {
+            'title': 'Название',
+            'description': 'Описание',
+            'steps': 'Шаги приготовления',
+            'cook_time': 'Время приготовления (мин)',
+            'image': 'Изображение',
+            'categories': 'Категории',
         }
 
     def __init__(self, *args, **kwargs):
@@ -23,7 +41,6 @@ class RecipeForm(forms.ModelForm):
 class RegisterForm(UserCreationForm):
     """
     Форма для регистрации нового пользователя.
-    Расширяет встроенную форму UserCreationForm.
     """
     username = forms.CharField(label="Имя пользователя",
                                help_text="До 150 символов. Только буквы, цифры и символы @/./+/-/_")
@@ -38,11 +55,22 @@ class RegisterForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Этот email уже используется.")
+        return email
+
 
 class RecipeIngredientForm(forms.ModelForm):
     class Meta:
         model = RecipeIngredient
-        fields = ['ingredient', 'amount']
+        fields = ['ingredient', 'amount', 'unit']
+        labels = {
+            'ingredient': 'Ингредиент',
+            'amount': 'Количество',
+            'unit': 'Единица',
+        }
 
 
 RecipeIngredientFormSet = inlineformset_factory(

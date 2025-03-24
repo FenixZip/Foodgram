@@ -1,19 +1,21 @@
 {% extends 'recipes/base.html' %}
-
 {% block content %}
-<h2>Мои рецепты</h2>
-
-{% if recipes %}
-  <ul>
-    {% for recipe in recipes %}
-      <li>
-        <a href="{% url 'recipes:recipe_detail' recipe.id %}">{{ recipe.title }}</a> —
-        {{ recipe.cook_time }} мин
-        [<a href="{% url 'recipes:edit_recipe' recipe.id %}">Редактировать</a>]
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>У вас пока нет рецептов. <a href="{% url 'recipes:add_recipe' %}">Создать рецепт</a></p>
+<h2 class="mb-4">Мой профиль</h2>
+{% if profile.avatar %}
+  <img src="{{ profile.avatar.url }}" width="100" class="rounded-circle mb-3">
 {% endif %}
+<p>{{ profile.bio }}</p>
+<a href="{% url 'recipes:edit_profile' %}" class="btn btn-outline-secondary mb-4">Редактировать профиль</a>
+
+<h4>Мои рецепты</h4>
+<ul class="list-group">
+  {% for recipe in recipes %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <a href="{% url 'recipes:recipe_detail' recipe.id %}">{{ recipe.title }}</a>
+      <span>{{ recipe.cook_time }} мин</span>
+    </li>
+  {% empty %}
+    <li class="list-group-item">У вас пока нет рецептов.</li>
+  {% endfor %}
+</ul>
 {% endblock %}

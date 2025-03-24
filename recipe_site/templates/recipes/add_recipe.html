@@ -1,27 +1,40 @@
 {% extends 'recipes/base.html' %}
 
 {% block content %}
-<h2>{% if edit %}Редактировать рецепт{% else %}Добавить рецепт{% endif %}</h2>
-
-{% if form.errors %}
-  <div style="color: red;">{{ form.errors }}</div>
-{% endif %}
-{% if formset.non_form_errors %}
-  <div style="color: red;">{{ formset.non_form_errors }}</div>
-{% endif %}
+<h2 class="mb-4">{% if edit %}Редактировать рецепт{% else %}Добавить рецепт{% endif %}</h2>
 
 <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+  {% csrf_token %}
+  <div class="mb-3">
     {{ form.as_p }}
+  </div>
 
-    <h3>Ингредиенты:</h3>
-    {{ formset.management_form }}
+  <h4>Ингредиенты:</h4>
+  {{ formset.management_form }}
+  <div id="formset-container">
     {% for form in formset %}
-        <div style="margin-bottom: 10px; border: 1px solid #ccc; padding: 10px;">
-            {{ form.as_p }}
-        </div>
+      <div class="card mb-3 p-3">
+        {{ form.as_p }}
+      </div>
     {% endfor %}
+  </div>
 
-    <button type="submit">Сохранить</button>
+  <button type="button" class="btn btn-secondary mb-3" onclick="addForm()">➕ Добавить ингредиент</button>
+  <br>
+  <button type="submit" class="btn btn-primary">Сохранить</button>
 </form>
+
+<script>
+  let formIndex = {{ formset.total_form_count }};
+  function addForm() {
+    const container = document.getElementById("formset-container");
+    const emptyFormHtml = `{{ formset.empty_form.as_p|escapejs }}`;
+    const newForm = document.createElement("div");
+    newForm.classList.add("card", "mb-3", "p-3");
+    newForm.innerHTML = emptyFormHtml.replace(/__prefix__/g, formIndex);
+    container.appendChild(newForm);
+    formIndex++;
+    document.getElementById("id_ingredients-TOTAL_FORMS").value = formIndex;
+  }
+</script>
 {% endblock %}

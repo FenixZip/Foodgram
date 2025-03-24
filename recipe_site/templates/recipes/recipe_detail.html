@@ -1,28 +1,28 @@
 {% extends 'recipes/base.html' %}
-
 {% block content %}
-  <h2>{{ recipe.title }}</h2>
+<h2>{{ recipe.title }}</h2>
 
-  {% if recipe.image %}
-    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
-  {% endif %}
+{% if recipe.image %}
+  <img src="{{ recipe.image.url }}" class="img-fluid rounded mb-3">
+{% endif %}
 
-  <p><strong>Описание:</strong> {{ recipe.description }}</p>
+<p><strong>Описание:</strong> {{ recipe.description }}</p>
 
-  <p><strong>Шаги:</strong><br>{{ recipe.steps|linebreaks }}</p>
+<h5>Ингредиенты:</h5>
+<ul>
+  {% for item in recipe.ingredients.all %}
+    <li>{{ item.ingredient.name }} — {{ item.amount }} {{ item.unit }}</li>
+  {% empty %}
+    <li>Ингредиенты не указаны.</li>
+  {% endfor %}
+</ul>
 
-  <p><strong>Время приготовления:</strong> {{ recipe.cook_time }} минут</p>
+<p><strong>Шаги:</strong><br>{{ recipe.steps|linebreaks }}</p>
+<p><strong>Время приготовления:</strong> {{ recipe.cook_time }} мин</p>
+<p><strong>Автор:</strong> <a href="{% url 'recipes:user_profile' recipe.author.username %}">{{ recipe.author.username }}</a></p>
 
-  <p><strong>Автор:</strong>
-    <a href="{% url 'recipes:user_profile' recipe.author.username %}">
-      {{ recipe.author.username }}
-    </a>
-  </p>
-
-  {% if request.user == recipe.author %}
-    <p>
-      <a href="{% url 'recipes:edit_recipe' recipe.id %}">Редактировать</a> |
-      <a href="{% url 'recipes:delete_recipe' recipe.id %}">Удалить</a>
-    </p>
-  {% endif %}
+{% if request.user == recipe.author %}
+  <a href="{% url 'recipes:edit_recipe' recipe.id %}" class="btn btn-warning btn-sm me-2">Редактировать</a>
+  <a href="{% url 'recipes:delete_recipe' recipe.id %}" class="btn btn-danger btn-sm">Удалить</a>
+{% endif %}
 {% endblock %}
