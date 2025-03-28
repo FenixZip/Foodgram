@@ -1,7 +1,8 @@
 ![screenshot](https://img.shields.io/badge/Django-4.x-green?logo=django)
-![status](https://img.shields.io/badge/Статус-Разработка-yellow)
+q![status](https://img.shields.io/badge/Статус-Разработка-yellow)
 ![python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)
-
+http://45.89.53.86/
+cd
 ---
 
 ## 🧾 Описание проекта
